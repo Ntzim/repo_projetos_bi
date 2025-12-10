@@ -1,0 +1,134 @@
+table Tabela1
+	lineageTag: 0dd366d0-d63d-4f6c-8c4a-359694b139b2
+
+	measure 'turma 1' = 1
+		formatString: 0
+		lineageTag: 20d6c939-3f2f-47a0-b34f-ca59f587d60e
+
+	measure 'turma 2' = 2
+		formatString: 0
+		lineageTag: ff998881-0ad8-4cea-9d80-7050d2323186
+
+	measure 'turma 3' = 3
+		formatString: 0
+		lineageTag: 76f394d9-f054-4797-b3cc-930b3a1c1cde
+
+	column 'Nome Completo'
+		dataType: string
+		lineageTag: 7ef20840-a18e-4c9b-ae85-b872f73d7af8
+		summarizeBy: none
+		sourceColumn: Nome Completo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Turma
+		dataType: string
+		lineageTag: b7cf57ff-84f2-4ba3-851b-69d3c7585b8d
+		summarizeBy: none
+		sourceColumn: Turma
+
+		annotation SummarizationSetBy = Automatic
+
+	column CPF
+		dataType: string
+		lineageTag: 6a856f8b-bf66-437f-8fa0-b7d88bebd20a
+		summarizeBy: none
+		sourceColumn: CPF
+
+		annotation SummarizationSetBy = Automatic
+
+	column Idade
+		dataType: int64
+		formatString: 0
+		lineageTag: c177b0de-080a-47c1-b8c4-4e4f03876170
+		summarizeBy: sum
+		sourceColumn: Idade
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Qual o Ramo do seu Negócio?'
+		dataType: string
+		lineageTag: fd93c4bc-337e-4b79-96de-7077d457ec9d
+		summarizeBy: none
+		sourceColumn: Qual o Ramo do seu Negócio?
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Instagram do Negócio'
+		dataType: string
+		lineageTag: f42f0070-ad96-4784-8fa7-10ddeabd2b30
+		summarizeBy: none
+		sourceColumn: Instagram do Negócio
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Possui CNPJ?'
+		dataType: string
+		lineageTag: 9aaa1380-7840-4e99-8a16-95a3cdecef3e
+		summarizeBy: none
+		sourceColumn: Possui CNPJ?
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Qual seu faturamento atual?'
+		dataType: double
+		lineageTag: 3534d880-d600-41a8-b42c-51ccf6a69173
+		summarizeBy: sum
+		sourceColumn: Qual seu faturamento atual?
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Qual sua renda mensal atual?'
+		dataType: double
+		lineageTag: ccc83a1c-4878-4a97-96a0-6cfbae3c8cd9
+		summarizeBy: sum
+		sourceColumn: Qual sua renda mensal atual?
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Vendeu?
+		dataType: string
+		lineageTag: 65199597-c535-406a-b934-e96672abbf6a
+		summarizeBy: none
+		sourceColumn: Vendeu?
+
+		annotation SummarizationSetBy = Automatic
+
+	column Certificados
+		dataType: string
+		lineageTag: bc72322a-e653-441e-931b-3874d8a4aa44
+		summarizeBy: none
+		sourceColumn: Certificados
+
+		annotation SummarizationSetBy = Automatic
+
+	column FaixaEtária =
+			
+			SWITCH(
+			    TRUE(),
+			    [Idade] <= 18, "0-18",
+			    [Idade] <= 30, "19-30",
+			    [Idade] <= 60, "31-60",
+			    "61+"
+			)
+		lineageTag: 11903415-1c8a-48eb-889e-0c6035ba4a26
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Tabela1 = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\ribei\Downloads\Sicredi - Bi (3).xlsx"), null, true),
+				    Tabela1_Table = Fonte{[Item="Tabela1",Kind="Table"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Tabela1_Table,{{"Nome Completo", type text}, {"Turma", type text}, {"CPF", type any}, {"Idade", Int64.Type}, {"Qual o Ramo do seu Negócio?", type text}, {"Instagram do Negócio", type text}, {"Possui CNPJ?", type text}, {"Qual seu faturamento atual?", type number}, {"Qual sua renda mensal atual?", type number}, {"Vendeu?", type text}, {"Certificados", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

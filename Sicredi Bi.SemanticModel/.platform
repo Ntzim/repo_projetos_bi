@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Sicredi Bi"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "597bc9d8-9931-4443-b3a7-7d0552c8d098"
+  }
+}
